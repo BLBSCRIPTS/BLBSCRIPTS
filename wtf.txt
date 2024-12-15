@@ -1,0 +1,225 @@
+local humanoid = character:WaitForChild("Humanoid")
+local Players = game:GetService("Players") 
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local playerPosition = character.HumanoidRootPart.Position
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Title of the library", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+--                                                                                                                                         1
+local Tab = Window:MakeTab({
+    Name = "Farm",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+ local Section = Tab:AddSection({
+ Name = "Farm"
+  })
+  Tab:AddButton({
+Name = "tpCoins",
+ 
+ Callback = function()
+    for i, v in pairs(game:GetDescendants()) do
+        if v.Name == 'Credit' and v:IsA("BasePart") then
+            v.CFrame = CFrame.new(playerPosition)
+        end
+    end
+end
+})
+  --                                                                                                                                       2 
+   local Tab = Window:MakeTab({
+    Name = "Esp",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+    })
+    local Section = Tab:AddSection({
+    Name = "NameTags"
+    })
+    Tab:AddButton({
+    Name = "+NameTags",
+    Callback = function()
+        local function createNameTag(player)
+            local head = character:WaitForChild("Head")
+            local billboardGui = Instance.new("BillboardGui")
+            billboardGui.Adornee = head
+            billboardGui.Size = UDim2.new(0, 200, 0, 50)
+            billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+            billboardGui.AlwaysOnTop = true
+            local nameLabel = Instance.new("TextLabel")
+            nameLabel.Parent = billboardGui
+            nameLabel.Size = UDim2.new(1, 0, 1, 0)
+            nameLabel.Text = player.Name
+            nameLabel.TextColor3 = Color3.new(1, 1, 1) 
+            nameLabel.BackgroundTransparency = 1
+            nameLabel.TextStrokeTransparency = 0 -- +обводкa
+            nameLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
+            nameLabel.Font = Enum.Font.SourceSans
+            nameLabel.TextSize = 13
+            billboardGui.Parent = head
+        end
+        Players.PlayerAdded:Connect(function(player)
+            player.CharacterAdded:Connect(function(character)
+                createNameTag(player)
+            end)
+        end)
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player.Character then
+                createNameTag(player)
+            end
+        end
+    end
+})
+    Tab:AddButton({
+    Name = "-NameTages",
+    Callback = function()
+        local Players = game:GetService("Players")
+local function removeNameTag(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local head = character:FindFirstChild("Head")
+    if head then
+        for _, gui in ipairs(head:GetChildren()) do
+            if gui:IsA("BillboardGui") then
+                gui:Destroy()
+            end
+        end
+    end
+end
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function(character)
+        removeNameTag(player)
+    end)
+end)
+for _, player in ipairs(Players:GetPlayers()) do
+    if player.Character then
+        removeNameTag(player)
+    end
+end
+    end    
+})
+    local Section = Tab:AddSection({
+    Name = "AnotherEsp(forTelo)"
+    })
+    Tab:AddButton({
+    Name = "+BodyEsp",
+    Callback = function()
+     local function applyHighlight(player)
+            local function onCharacterAdded(character)
+                -- +HighLight
+                local highlight = Instance.new("Highlight", character)
+                highlight.Archivable = true
+                highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop -- Убедиться, что выделение всегда видно
+                highlight.Enabled = true
+                highlight.FillColor = Color3.fromRGB(255, 0, 4) -- Задать цвет заливки (ярко-красный)
+                highlight.OutlineColor = Color3.fromRGB(255, 255, 255) -- Задать цвет обводки (белый)
+                highlight.FillTransparency = 0.6-- Задать прозрачность заливки
+                highlight.OutlineTransparency = 0 -- Нет прозрачности обводки
+            end
+
+            -- Must be here?
+            if player.Character then
+                onCharacterAdded(player.Character)
+            end
+
+            -- +CharacterAdded
+            player.CharacterAdded:Connect(onCharacterAdded)
+        end
+
+        --NNP
+        for _, player in pairs(Players:GetPlayers()) do
+            applyHighlight(player)
+        end
+tab:AddButton({
+    Name = "-BodyEsp",
+    Callback = function()
+        local function removeHighlight(player)
+            local function onCharacterAdded(character)
+                for _, highlight in ipairs(character:GetChildren()) do
+                    if highlight:IsA("Highlight") then
+                        highlight:Destroy()
+                    end
+                end
+            end
+            if player.Character then
+                onCharacterAdded(player.Character)
+            end
+            player.CharacterAdded:Connect(onCharacterAdded)
+        end
+        for _, player in pairs(Players:GetPlayers()) do
+            removeHighlight(player)
+        end
+    end
+})
+--                                                                                                                                        3
+local Tab = Window:MakeTab({
+    Name = "Hacks",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+    })
+local Section = Tab:AddSection({
+    Name = "Legit?"
+})
+
+Tab:AddButton({
+    Name = "LegitMod",
+    Callback = function()
+             humanoid.WalkSpeed = 25
+            local function addHitbox(character)
+            local hrp = character:WaitForChild("HumanoidRootPart")
+            local extraHitbox = Instance.new("Part")
+             extraHitbox.Parent = character
+             extraHitbox.Name = "Hitbox"
+             extraHitbox.Anchored = false
+             extraHitbox.CanCollide = false
+             extraHitbox.Transparency = 0.7 
+             extraHitbox.Color = Color3.fromRGB(255, 0, 0) 
+             extraHitbox.Size = Vector3.new(5, 5, 5) 
+             extraHitbox.Position = hrp.Position + Vector3.new(0, 0, 0) 
+            
+            local weld = Instance.new("WeldConstraint")
+             weld.Parent = extraHitbox
+             weld.Part0 = extraHitbox
+             weld.Part1 = hrp
+        end
+
+        for _, plr in pairs(game:GetService("Players"):GetPlayers()) do
+            if plr.Character then
+                addHitbox(plr.Character)
+            end
+        end
+
+        game:GetService("Players").PlayerAdded:Connect(function(plr)
+            plr.CharacterAdded:Connect(addHitbox)
+        end)
+    end
+})
+
+Tab:AddButton({
+    Name = "removeLegitMod",
+    Callback = function()
+   player.WalkSpeed = 15
+        local function removeHitbox(character)
+            for _, part in pairs(character:GetChildren()) do
+                if part.Name == "Hitbox" and part:IsA("Part") then
+                    part:Destroy()
+                end
+            end
+        end
+
+        for _, plr in pairs(game:GetService("Players"):GetPlayers()) do
+            if plr.Character then
+                removeHitbox(plr.Character)
+            end
+        end
+       game:GetService("Players").PlayerAdded:Connect(function(plr)
+            plr.CharacterAdded:Connect(removeHitbox)
+        end)
+    end
+})
+local Section = Tab:AddSection({
+    Name = "NotLegit!"
+})
+
+Tab:AddButton({
+    Name = "NotLegitMod!",
+    Callback = function()
+        print('uwu')
+    end
